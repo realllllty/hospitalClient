@@ -1,4 +1,4 @@
-import AppNavigation from "./navigation/AppNavigation.js";
+import AppNavigation from "./navigation/AppNavigation";
 
 export default function App() {
   return <AppNavigation />;
