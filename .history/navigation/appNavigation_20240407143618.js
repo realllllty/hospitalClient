@@ -5,7 +5,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
-import ForgetPassport from "../pages/ForgetPassport";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,16 +26,7 @@ export default function AppNavigation() {
             headerShown: false,
           }}
         />
-        <Stack.Screen
-          name="注册"
-          component={RegisterPage}
-          options={{ headerTitleAlign: "center" }}
-        />
-        <Stack.Screen
-          name="忘记密码"
-          component={ForgetPassport}
-          options={{ headerTitleAlign: "center" }}
-        />
+        <Stack.Screen name="注册" component={RegisterPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
