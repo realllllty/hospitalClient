@@ -6,7 +6,6 @@ export default function App() {
   return (
     <PaperProvider>
       <AppNavigation />
-      <Toast ref={(ref) => Toast.setRef(ref)} />
     </PaperProvider>
   );
 }

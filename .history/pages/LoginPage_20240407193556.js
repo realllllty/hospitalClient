@@ -49,10 +49,7 @@ export default function LoginPagePage({ navigation }) {
     }
 
     if (!validatePassword(password)) {
-      Toast.show({
-        type: "error",
-        text1: "密码格式错误，密码为6-16位字母加数字",
-      });
+      Toast.show({ type: "error", text1: "密码格式错误" });
       return;
     }
 

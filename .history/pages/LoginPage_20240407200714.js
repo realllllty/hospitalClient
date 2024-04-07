@@ -56,6 +56,8 @@ export default function LoginPagePage({ navigation }) {
       return;
     }
 
+    Toast.show({ type: "success", text1: "注册成功" });
+
     // 登录成功后，使用navigation.navigate跳转到HomePage
     navigation.navigate("首页");
   };

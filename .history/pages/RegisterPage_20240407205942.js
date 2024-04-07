@@ -69,12 +69,6 @@ export default function RegisterPage({ navigation }) {
       return;
     }
 
-    // 老人ID验证：是否为数字
-    if (!elderID || !/^\d+$/.test(elderID)) {
-      Toast.show({ type: "error", text1: "老人ID必须是数字" });
-      return;
-    }
-
     Toast.show({ type: "success", text1: "注册成功" });
 
     navigation.navigate("登录");

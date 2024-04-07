@@ -28,33 +28,8 @@ export default function LoginPagePage({ navigation }) {
     return phone.length === 11 && /^\d+$/.test(phone);
   };
 
-  const validatePassword = (pwd) => {
-    return pwd.length >= 6 && pwd.length <= 16 && /^[A-Za-z0-9]+$/.test(pwd);
-  };
-
   const handleLogin = () => {
-    if (!phoneNumber) {
-      Toast.show({ type: "error", text1: "手机号不能为空" });
-      return;
-    }
-
-    if (!validatePhoneNumber(phoneNumber)) {
-      Toast.show({ type: "error", text1: "手机号错误" });
-      return;
-    }
-
-    if (!password) {
-      Toast.show({ type: "error", text1: "密码不能为空" });
-      return;
-    }
-
-    if (!validatePassword(password)) {
-      Toast.show({
-        type: "error",
-        text1: "密码格式错误，密码为6-16位字母加数字",
-      });
-      return;
-    }
+    // 登录逻辑...
 
     // 登录成功后，使用navigation.navigate跳转到HomePage
     navigation.navigate("首页");
@@ -67,19 +42,6 @@ export default function LoginPagePage({ navigation }) {
   const handleForget = () => {
     navigation.navigate("忘记密码");
   };
-
-  // 假设的登录验证逻辑
-  const isLoginSuccess = false; // 应该由后端验证逻辑替代
-  const isPasswordCorrect = true; // 应该由后端验证逻辑替代
-
-  if (isLoginSuccess) {
-    if (!isPasswordCorrect) {
-      Toast.show({ type: "error", text1: "密码错误" });
-    } else {
-      // 登录成功逻辑
-      navigation.navigate("首页");
-    }
-  }
 
   return (
     <View style={GlobalStyles.container}>

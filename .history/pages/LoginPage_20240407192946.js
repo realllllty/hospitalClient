@@ -49,10 +49,7 @@ export default function LoginPagePage({ navigation }) {
     }
 
     if (!validatePassword(password)) {
-      Toast.show({
-        type: "error",
-        text1: "密码格式错误，密码为6-16位字母加数字",
-      });
+      Toast.show({ type: "error", text1: "密码格式错误" });
       return;
     }
 
@@ -67,19 +64,6 @@ export default function LoginPagePage({ navigation }) {
   const handleForget = () => {
     navigation.navigate("忘记密码");
   };
-
-  // 假设的登录验证逻辑
-  const isLoginSuccess = false; // 应该由后端验证逻辑替代
-  const isPasswordCorrect = true; // 应该由后端验证逻辑替代
-
-  if (isLoginSuccess) {
-    if (!isPasswordCorrect) {
-      Toast.show({ type: "error", text1: "密码错误" });
-    } else {
-      // 登录成功逻辑
-      navigation.navigate("首页");
-    }
-  }
 
   return (
     <View style={GlobalStyles.container}>

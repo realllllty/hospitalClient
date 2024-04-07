@@ -40,18 +40,6 @@ export default function ForgotPassword({ navigation }) {
     //   return;
     // }
 
-    // 新密码为空的验证
-    if (!newPassword.trim()) {
-      Toast.show({ type: "error", text1: "密码不能为空" });
-      return;
-    }
-
-    // 新密码格式验证：6-16位字母加数字
-    if (!/^[A-Za-z0-9]{6,16}$/.test(newPassword)) {
-      Toast.show({ type: "error", text1: "密码格式不正确" });
-      return;
-    }
-
     // 检查两次新密码是否匹配
     if (newPassword !== confirmNewPassword) {
       Toast.show({ type: "error", text1: "两次输入的密码不一致" });

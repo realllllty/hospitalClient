@@ -22,10 +22,6 @@ export default function ForgotPassword({ navigation }) {
     // 逻辑发送验证码...
   };
 
-  const validatePhoneNumber = (phone) => {
-    return phone.length === 11 && /^\d+$/.test(phone);
-  };
-
   const handlePasswordReset = () => {
     // 手机号格式验证
     if (!validatePhoneNumber(phoneNumber)) {
@@ -40,18 +36,6 @@ export default function ForgotPassword({ navigation }) {
     //   return;
     // }
 
-    // 新密码为空的验证
-    if (!newPassword.trim()) {
-      Toast.show({ type: "error", text1: "密码不能为空" });
-      return;
-    }
-
-    // 新密码格式验证：6-16位字母加数字
-    if (!/^[A-Za-z0-9]{6,16}$/.test(newPassword)) {
-      Toast.show({ type: "error", text1: "密码格式不正确" });
-      return;
-    }
-
     // 检查两次新密码是否匹配
     if (newPassword !== confirmNewPassword) {
       Toast.show({ type: "error", text1: "两次输入的密码不一致" });
@@ -62,7 +46,7 @@ export default function ForgotPassword({ navigation }) {
     Toast.show({ type: "success", text1: "密码重置成功!" });
 
     // 跳转到登录页面
-    navigation.navigate("登录"); // 确保替换为你的登录页面的实际路由名称
+    navigation.navigate("登录页面名称"); // 确保替换为你的登录页面的实际路由名称
   };
 
   useEffect(() => {

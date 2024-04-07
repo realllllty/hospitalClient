@@ -2,67 +2,53 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useState, useEffect } from "react";
 import { MD2Colors, TextInput, Button } from "react-native-paper";
 import GlobalStyles from "../GlobalStyles";
-import Toast from "react-native-toast-message";
 
-export default function ForgotPassword({ navigation }) {
+export default function RegisterPage() {
+  const [flatTextSecureEntry, setFlatTextSecureEntry] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [userName, setUserName] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [elderID, setElderID] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [timer, setTimer] = useState(0);
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [feedbackColor, setFeedbackColor] = useState("transparent");
-  const [flatTextSecureEntry, setFlatTextSecureEntry] = useState(true);
 
   const sendVerificationCode = () => {
     // 启动倒计时
     setTimer(60);
     setIsButtonDisabled(true);
-    // 逻辑发送验证码...
   };
 
-  const validatePhoneNumber = (phone) => {
-    return phone.length === 11 && /^\d+$/.test(phone);
-  };
+  const handleRegister = () => {
+    // 清除之前的消息
+    setFeedbackMessage("");
+    setFeedbackColor("transparent");
 
-  const handlePasswordReset = () => {
-    // 手机号格式验证
-    if (!validatePhoneNumber(phoneNumber)) {
-      Toast.show({ type: "error", text1: "请输入正确的手机号" });
+    // 用户名验证：3-8位字符
+    if (!userName || userName.length < 3 || userName.length > 8) {
+      Toast.show({
+        type: "error",
+        text1: "用户名必须是3-8位字符",
+      });
       return;
     }
 
-    // 假设这里是验证手机验证码的逻辑
-    // 验证码逻辑跳过，因为需要后端配合
-    // if (!validateVerificationCode(verificationCode)) {
-    //   Toast.show({ type: "error", text1: "密保问题不正确" }); // 实际上应是验证码不正确
-    //   return;
-    // }
-
-    // 新密码为空的验证
-    if (!newPassword.trim()) {
-      Toast.show({ type: "error", text1: "密码不能为空" });
-      return;
+    // 检查两次密码是否匹配
+    if (password === confirmPassword) {
+      // 密码匹配，继续注册逻辑
+      console.log("注册逻辑，待实现");
+      // 实现注册逻辑...
+      // 假设注册成功
+      setFeedbackColor(MD2Colors.green600); // 设置为绿色
+      setFeedbackMessage("注册成功!"); // 设置成功消息
+    } else {
+      // 如果密码不匹配，设置错误消息
+      setFeedbackColor("red"); // 设置为红色
+      setFeedbackMessage("两次输入的密码不匹配，请重新输入");
     }
-
-    // 新密码格式验证：6-16位字母加数字
-    if (!/^[A-Za-z0-9]{6,16}$/.test(newPassword)) {
-      Toast.show({ type: "error", text1: "密码格式不正确" });
-      return;
-    }
-
-    // 检查两次新密码是否匹配
-    if (newPassword !== confirmNewPassword) {
-      Toast.show({ type: "error", text1: "两次输入的密码不一致" });
-      return;
-    }
-
-    // 假设密码重置成功
-    Toast.show({ type: "success", text1: "密码重置成功!" });
-
-    // 跳转到登录页面
-    navigation.navigate("登录"); // 确保替换为你的登录页面的实际路由名称
   };
 
   useEffect(() => {
@@ -88,13 +74,22 @@ export default function ForgotPassword({ navigation }) {
   return (
     <View style={GlobalStyles.container}>
       <TextInput
+        label="请输入用户名"
+        style={GlobalStyles.noPaddingInput}
+        placeholderTextColor={MD2Colors.gray400}
+        placeholder="输入用户名"
+        value={userName}
+        onChangeText={(value) => setUserName(value)}
+        right={<TextInput.Icon icon="account" />}
+      />
+      <TextInput
         label="请输入11位手机号"
         style={GlobalStyles.noPaddingInput}
         placeholderTextColor={MD2Colors.gray400}
-        placeholder="输入手机号用于验证"
+        placeholder="输入手机号"
         maxLength={11}
         value={phoneNumber}
-        onChangeText={setPhoneNumber}
+        onChangeText={(value) => setPhoneNumber(value)}
         right={<TextInput.Icon icon="phone" />}
       />
       <View
@@ -102,15 +97,16 @@ export default function ForgotPassword({ navigation }) {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
+          marginBottom: 25,
         }}
       >
         <TextInput
-          label="请输入手机验证码"
-          style={[GlobalStyles.noPaddingInput, { flex: 1, marginRight: 10 }]}
+          label="请输入验证码"
+          style={[GlobalStyles.noPaddingInput]}
           placeholderTextColor={MD2Colors.gray400}
           placeholder="输入验证码"
           value={verificationCode}
-          onChangeText={setVerificationCode}
+          onChangeText={(value) => setVerificationCode(value)}
         />
         <Button
           mode="contained"
@@ -123,13 +119,23 @@ export default function ForgotPassword({ navigation }) {
         </Button>
       </View>
       <TextInput
-        label="请输入新密码"
+        label="请输入老人ID"
         style={GlobalStyles.noPaddingInput}
-        placeholder="新密码"
         placeholderTextColor={MD2Colors.gray400}
-        secureTextEntry={true}
-        value={newPassword}
-        onChangeText={setNewPassword}
+        placeholder="输入ID"
+        value={elderID}
+        onChangeText={(value) => setElderID(value)}
+        right={<TextInput.Icon icon="card-account-details-outline" />}
+      />
+
+      <TextInput
+        label="请输入您的密码"
+        style={GlobalStyles.noPaddingInput}
+        placeholder="输入密码"
+        placeholderTextColor={MD2Colors.gray400}
+        secureTextEntry={flatTextSecureEntry}
+        value={password}
+        onChangeText={(value) => setPassword(value)}
         right={
           <TextInput.Icon
             icon={flatTextSecureEntry ? "eye" : "eye-off"}
@@ -138,13 +144,13 @@ export default function ForgotPassword({ navigation }) {
         }
       />
       <TextInput
-        label="请再次输入新密码"
+        label="请再次输入您的密码"
         style={GlobalStyles.noPaddingInput}
-        placeholder="确认新密码"
+        placeholder="确认密码"
         placeholderTextColor={MD2Colors.gray400}
-        secureTextEntry={true}
-        value={confirmNewPassword}
-        onChangeText={setConfirmNewPassword}
+        secureTextEntry={flatTextSecureEntry}
+        value={confirmPassword}
+        onChangeText={(value) => setConfirmPassword(value)}
         right={
           <TextInput.Icon
             icon={flatTextSecureEntry ? "eye" : "eye-off"}
@@ -155,6 +161,7 @@ export default function ForgotPassword({ navigation }) {
       <Text
         style={{
           color: feedbackColor,
+          height: 20, // 预留空间，确保高度足够显示一行文字
           alignSelf: "center",
           marginVertical: 10,
         }}
@@ -166,10 +173,13 @@ export default function ForgotPassword({ navigation }) {
         style={GlobalStyles.button}
         buttonColor={"#1652ca"}
         textColor="white"
-        onPress={handlePasswordReset}
+        onPress={handleRegister}
+        labelStyle={styles.ButtonFontStyles}
       >
-        确定
+        注册
       </Button>
     </View>
   );
 }
+
+const styles = StyleSheet.create({});

@@ -49,10 +49,7 @@ export default function LoginPagePage({ navigation }) {
     }
 
     if (!validatePassword(password)) {
-      Toast.show({
-        type: "error",
-        text1: "密码格式错误，密码为6-16位字母加数字",
-      });
+      Toast.show({ type: "error", text1: "密码格式错误" });
       return;
     }
 
@@ -69,7 +66,7 @@ export default function LoginPagePage({ navigation }) {
   };
 
   // 假设的登录验证逻辑
-  const isLoginSuccess = false; // 应该由后端验证逻辑替代
+  const isLoginSuccess = true; // 应该由后端验证逻辑替代
   const isPasswordCorrect = true; // 应该由后端验证逻辑替代
 
   if (isLoginSuccess) {
@@ -83,6 +80,7 @@ export default function LoginPagePage({ navigation }) {
 
   return (
     <View style={GlobalStyles.container}>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
       <Text style={styles.headerText}>智慧养老院健康管理系统</Text>
       <Text style={styles.subHeaderText}>登录</Text>
       <TextInput

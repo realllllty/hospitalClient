@@ -1,10 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useState, useEffect } from "react";
-import { MD2Colors, TextInput, Button, Divider } from "react-native-paper";
+import { MD2Colors, TextInput, Button } from "react-native-paper";
 import GlobalStyles from "../GlobalStyles";
-import Toast from "react-native-toast-message";
 
-export default function RegisterPage({ navigation }) {
+export default function RegisterPage() {
   const [flatTextSecureEntry, setFlatTextSecureEntry] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
@@ -24,6 +23,10 @@ export default function RegisterPage({ navigation }) {
   };
 
   const handleRegister = () => {
+    // 清除之前的消息
+    setFeedbackMessage("");
+    setFeedbackColor("transparent");
+
     // 用户名验证：3-8位字符
     if (!userName || userName.length < 3 || userName.length > 8) {
       Toast.show({
@@ -60,24 +63,19 @@ export default function RegisterPage({ navigation }) {
       return;
     }
 
-    // 密码二次确认
-    if (password !== confirmPassword) {
-      Toast.show({
-        type: "error",
-        text1: "两次输入的密码不一致",
-      });
-      return;
+    // 检查两次密码是否匹配
+    if (password === confirmPassword) {
+      // 密码匹配，继续注册逻辑
+      console.log("注册逻辑，待实现");
+      // 实现注册逻辑...
+      // 假设注册成功
+      setFeedbackColor(MD2Colors.green600); // 设置为绿色
+      setFeedbackMessage("注册成功!"); // 设置成功消息
+    } else {
+      // 如果密码不匹配，设置错误消息
+      setFeedbackColor("red"); // 设置为红色
+      setFeedbackMessage("两次输入的密码不匹配，请重新输入");
     }
-
-    // 老人ID验证：是否为数字
-    if (!elderID || !/^\d+$/.test(elderID)) {
-      Toast.show({ type: "error", text1: "老人ID必须是数字" });
-      return;
-    }
-
-    Toast.show({ type: "success", text1: "注册成功" });
-
-    navigation.navigate("登录");
   };
 
   useEffect(() => {
@@ -108,7 +106,6 @@ export default function RegisterPage({ navigation }) {
         placeholderTextColor={MD2Colors.gray400}
         placeholder="输入用户名"
         value={userName}
-        maxLength={8}
         onChangeText={(value) => setUserName(value)}
         right={<TextInput.Icon icon="account" />}
       />
@@ -148,9 +145,6 @@ export default function RegisterPage({ navigation }) {
           {isButtonDisabled ? `${timer}s` : "发送验证码"}
         </Button>
       </View>
-
-      {/* <Divider style={{ marginTop: 15 }} /> */}
-
       <TextInput
         label="请输入老人ID"
         style={GlobalStyles.noPaddingInput}
@@ -191,6 +185,16 @@ export default function RegisterPage({ navigation }) {
           />
         }
       />
+      <Text
+        style={{
+          color: feedbackColor,
+          height: 20, // 预留空间，确保高度足够显示一行文字
+          alignSelf: "center",
+          marginVertical: 10,
+        }}
+      >
+        {feedbackMessage}
+      </Text>
       <Button
         mode="elevated"
         style={GlobalStyles.button}

@@ -2,9 +2,8 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useState, useEffect } from "react";
 import { MD2Colors, TextInput, Button } from "react-native-paper";
 import GlobalStyles from "../GlobalStyles";
-import Toast from "react-native-toast-message";
 
-export default function ForgotPassword({ navigation }) {
+export default function ForgotPassword() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -13,7 +12,6 @@ export default function ForgotPassword({ navigation }) {
   const [timer, setTimer] = useState(0);
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [feedbackColor, setFeedbackColor] = useState("transparent");
-  const [flatTextSecureEntry, setFlatTextSecureEntry] = useState(true);
 
   const sendVerificationCode = () => {
     // 启动倒计时
@@ -22,47 +20,23 @@ export default function ForgotPassword({ navigation }) {
     // 逻辑发送验证码...
   };
 
-  const validatePhoneNumber = (phone) => {
-    return phone.length === 11 && /^\d+$/.test(phone);
-  };
-
   const handlePasswordReset = () => {
-    // 手机号格式验证
-    if (!validatePhoneNumber(phoneNumber)) {
-      Toast.show({ type: "error", text1: "请输入正确的手机号" });
-      return;
-    }
-
-    // 假设这里是验证手机验证码的逻辑
-    // 验证码逻辑跳过，因为需要后端配合
-    // if (!validateVerificationCode(verificationCode)) {
-    //   Toast.show({ type: "error", text1: "密保问题不正确" }); // 实际上应是验证码不正确
-    //   return;
-    // }
-
-    // 新密码为空的验证
-    if (!newPassword.trim()) {
-      Toast.show({ type: "error", text1: "密码不能为空" });
-      return;
-    }
-
-    // 新密码格式验证：6-16位字母加数字
-    if (!/^[A-Za-z0-9]{6,16}$/.test(newPassword)) {
-      Toast.show({ type: "error", text1: "密码格式不正确" });
-      return;
-    }
+    // 清除之前的消息
+    setFeedbackMessage("");
+    setFeedbackColor("transparent");
 
     // 检查两次新密码是否匹配
-    if (newPassword !== confirmNewPassword) {
-      Toast.show({ type: "error", text1: "两次输入的密码不一致" });
-      return;
+    if (newPassword === confirmNewPassword) {
+      // 密码匹配，继续密码重置逻辑
+      console.log("密码重置逻辑，待实现");
+      // 假设密码重置成功
+      setFeedbackColor(MD2Colors.green600);
+      setFeedbackMessage("密码重置成功!");
+    } else {
+      // 如果密码不匹配，设置错误消息
+      setFeedbackColor("red");
+      setFeedbackMessage("两次输入的密码不匹配，请重新输入");
     }
-
-    // 假设密码重置成功
-    Toast.show({ type: "success", text1: "密码重置成功!" });
-
-    // 跳转到登录页面
-    navigation.navigate("登录"); // 确保替换为你的登录页面的实际路由名称
   };
 
   useEffect(() => {
@@ -102,10 +76,11 @@ export default function ForgotPassword({ navigation }) {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
+          marginBottom: 25,
         }}
       >
         <TextInput
-          label="请输入手机验证码"
+          label="请输入验证码"
           style={[GlobalStyles.noPaddingInput, { flex: 1, marginRight: 10 }]}
           placeholderTextColor={MD2Colors.gray400}
           placeholder="输入验证码"
@@ -130,12 +105,7 @@ export default function ForgotPassword({ navigation }) {
         secureTextEntry={true}
         value={newPassword}
         onChangeText={setNewPassword}
-        right={
-          <TextInput.Icon
-            icon={flatTextSecureEntry ? "eye" : "eye-off"}
-            onPress={() => setFlatTextSecureEntry(!flatTextSecureEntry)}
-          />
-        }
+        right={<TextInput.Icon icon="lock" />}
       />
       <TextInput
         label="请再次输入新密码"
@@ -145,12 +115,7 @@ export default function ForgotPassword({ navigation }) {
         secureTextEntry={true}
         value={confirmNewPassword}
         onChangeText={setConfirmNewPassword}
-        right={
-          <TextInput.Icon
-            icon={flatTextSecureEntry ? "eye" : "eye-off"}
-            onPress={() => setFlatTextSecureEntry(!flatTextSecureEntry)}
-          />
-        }
+        right={<TextInput.Icon icon="lock" />}
       />
       <Text
         style={{
@@ -168,7 +133,7 @@ export default function ForgotPassword({ navigation }) {
         textColor="white"
         onPress={handlePasswordReset}
       >
-        确定
+        重置密码
       </Button>
     </View>
   );

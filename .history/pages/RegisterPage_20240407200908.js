@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useState, useEffect } from "react";
-import { MD2Colors, TextInput, Button, Divider } from "react-native-paper";
+import { MD2Colors, TextInput, Button } from "react-native-paper";
 import GlobalStyles from "../GlobalStyles";
 import Toast from "react-native-toast-message";
 
-export default function RegisterPage({ navigation }) {
+export default function RegisterPage() {
   const [flatTextSecureEntry, setFlatTextSecureEntry] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
@@ -24,6 +24,10 @@ export default function RegisterPage({ navigation }) {
   };
 
   const handleRegister = () => {
+    // 清除之前的消息
+    setFeedbackMessage("");
+    setFeedbackColor("transparent");
+
     // 用户名验证：3-8位字符
     if (!userName || userName.length < 3 || userName.length > 8) {
       Toast.show({
@@ -69,14 +73,10 @@ export default function RegisterPage({ navigation }) {
       return;
     }
 
-    // 老人ID验证：是否为数字
-    if (!elderID || !/^\d+$/.test(elderID)) {
-      Toast.show({ type: "error", text1: "老人ID必须是数字" });
-      return;
-    }
-
     Toast.show({ type: "success", text1: "注册成功" });
 
+    // 注册成功后跳转到登录页面
+    // 注意替换"登录页面名称"为你实际登录页面的路由名称
     navigation.navigate("登录");
   };
 
@@ -148,9 +148,6 @@ export default function RegisterPage({ navigation }) {
           {isButtonDisabled ? `${timer}s` : "发送验证码"}
         </Button>
       </View>
-
-      {/* <Divider style={{ marginTop: 15 }} /> */}
-
       <TextInput
         label="请输入老人ID"
         style={GlobalStyles.noPaddingInput}

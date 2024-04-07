@@ -24,6 +24,10 @@ export default function RegisterPage({ navigation }) {
   };
 
   const handleRegister = () => {
+    // 清除之前的消息
+    setFeedbackMessage("");
+    setFeedbackColor("transparent");
+
     // 用户名验证：3-8位字符
     if (!userName || userName.length < 3 || userName.length > 8) {
       Toast.show({
@@ -66,12 +70,6 @@ export default function RegisterPage({ navigation }) {
         type: "error",
         text1: "两次输入的密码不一致",
       });
-      return;
-    }
-
-    // 老人ID验证：是否为数字
-    if (!elderID || !/^\d+$/.test(elderID)) {
-      Toast.show({ type: "error", text1: "老人ID必须是数字" });
       return;
     }
 
