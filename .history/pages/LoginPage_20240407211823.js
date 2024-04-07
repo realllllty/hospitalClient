@@ -60,8 +60,7 @@ export default function LoginPagePage({ navigation }) {
       return;
     }
 
-    // if (phoneNumber === validPhoneNumber && password === validPassword) {
-    if (true) {
+    if (phoneNumber === validPhoneNumber && password === validPassword) {
       // 登录成功，跳转到首页
       navigation.navigate("首页");
     } else {
@@ -88,7 +87,6 @@ export default function LoginPagePage({ navigation }) {
         placeholderTextColor={MD2Colors.gray400}
         placeholder="输入手机号"
         value={phoneNumber}
-        maxLength={11}
         onChangeText={(value) => inputActionHandler("phoneNumber", value)}
         right={<TextInput.Icon icon="phone" />}
       />

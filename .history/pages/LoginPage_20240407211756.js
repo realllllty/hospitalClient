@@ -59,15 +59,6 @@ export default function LoginPagePage({ navigation }) {
       });
       return;
     }
-
-    // if (phoneNumber === validPhoneNumber && password === validPassword) {
-    if (true) {
-      // 登录成功，跳转到首页
-      navigation.navigate("首页");
-    } else {
-      // 登录失败，显示错误消息
-      Toast.show({ type: "error", text1: "手机号或密码错误" });
-    }
   };
 
   const handleRegister = () => {
@@ -77,6 +68,17 @@ export default function LoginPagePage({ navigation }) {
   const handleForget = () => {
     navigation.navigate("忘记密码");
   };
+
+  if (isLoginSuccess && isPasswordCorrect) {
+    // 登录成功且密码正确，跳转到首页
+    navigation.navigate("首页");
+  } else if (!isLoginSuccess) {
+    // 如果登录不成功（可能是因为用户不存在或其他原因），显示适当的错误消息
+    Toast.show({ type: "error", text1: "登录失败，请检查您的账户信息" });
+  } else if (!isPasswordCorrect) {
+    // 如果密码不正确，显示密码错误的消息
+    Toast.show({ type: "error", text1: "密码错误" });
+  }
 
   return (
     <View style={GlobalStyles.container}>
@@ -88,7 +90,6 @@ export default function LoginPagePage({ navigation }) {
         placeholderTextColor={MD2Colors.gray400}
         placeholder="输入手机号"
         value={phoneNumber}
-        maxLength={11}
         onChangeText={(value) => inputActionHandler("phoneNumber", value)}
         right={<TextInput.Icon icon="phone" />}
       />

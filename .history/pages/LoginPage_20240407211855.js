@@ -60,8 +60,7 @@ export default function LoginPagePage({ navigation }) {
       return;
     }
 
-    // if (phoneNumber === validPhoneNumber && password === validPassword) {
-    if (true) {
+    if (phoneNumber === validPhoneNumber && password === validPassword) {
       // 登录成功，跳转到首页
       navigation.navigate("首页");
     } else {
