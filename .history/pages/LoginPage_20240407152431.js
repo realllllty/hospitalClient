@@ -23,6 +23,7 @@ export default function LoginPagePage({ navigation }) {
     }
   };
 
+  // 假设这是登录函数，调用后成功登录
   const handleLogin = () => {
     // 登录逻辑...
 
@@ -39,7 +40,7 @@ export default function LoginPagePage({ navigation }) {
   };
 
   return (
-    <View style={GlobalStyles.container}>
+    <View style={styles.container}>
       <Text style={styles.headerText}>智慧养老院健康管理系统</Text>
       <Text style={styles.subHeaderText}>登录</Text>
       <TextInput
@@ -54,7 +55,7 @@ export default function LoginPagePage({ navigation }) {
 
       <TextInput
         label="请输入您的密码"
-        style={GlobalStyles.noPaddingInput}
+        style={styles.noPaddingInput}
         placeholder="输入密码"
         placeholderTextColor={MD2Colors.gray400}
         secureTextEntry={flatTextSecureEntry}
@@ -80,7 +81,7 @@ export default function LoginPagePage({ navigation }) {
       </View>
       <Button
         mode="elevated"
-        style={GlobalStyles.button}
+        style={styles.button}
         buttonColor={"#1652ca"}
         textColor="white"
         onPress={handleLogin}
@@ -93,6 +94,9 @@ export default function LoginPagePage({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  noPaddingInput: {
+    backgroundColor: "transparent",
+  },
   headerText: {
     fontSize: 28,
     fontWeight: "bold",
@@ -106,6 +110,14 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     fontWeight: 200,
   },
-
+  container: {
+    padding: 28,
+  },
+  button: {
+    borderRadius: 6,
+    width: "40%",
+    alignSelf: "center",
+    marginTop: 100,
+  },
   ButtonFontStyles: {},
 });

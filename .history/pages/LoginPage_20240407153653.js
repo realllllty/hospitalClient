@@ -80,7 +80,7 @@ export default function LoginPagePage({ navigation }) {
       </View>
       <Button
         mode="elevated"
-        style={GlobalStyles.button}
+        style={styles.button}
         buttonColor={"#1652ca"}
         textColor="white"
         onPress={handleLogin}

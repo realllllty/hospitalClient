@@ -33,8 +33,8 @@ export default function RegisterPage() {
       console.log("注册逻辑，待实现");
       // 实现注册逻辑...
       // 假设注册成功
-      setFeedbackColor(MD2Colors.green600); // 设置为绿色
-      setFeedbackMessage("注册成功!"); // 设置成功消息
+      setFeedbackColor("green"); // 设置为绿色
+      setFeedbackMessage("注册成功"); // 设置成功消息
     } else {
       // 如果密码不匹配，设置错误消息
       setFeedbackColor("red"); // 设置为红色

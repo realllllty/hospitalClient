@@ -22,26 +22,6 @@ export default function RegisterPage() {
     setIsButtonDisabled(true);
   };
 
-  const handleRegister = () => {
-    // 清除之前的消息
-    setFeedbackMessage("");
-    setFeedbackColor("transparent");
-
-    // 检查两次密码是否匹配
-    if (password === confirmPassword) {
-      // 密码匹配，继续注册逻辑
-      console.log("注册逻辑，待实现");
-      // 实现注册逻辑...
-      // 假设注册成功
-      setFeedbackColor(MD2Colors.green600); // 设置为绿色
-      setFeedbackMessage("注册成功!"); // 设置成功消息
-    } else {
-      // 如果密码不匹配，设置错误消息
-      setFeedbackColor("red"); // 设置为红色
-      setFeedbackMessage("两次输入的密码不匹配，请重新输入");
-    }
-  };
-
   useEffect(() => {
     let intervalId;
 
@@ -149,16 +129,11 @@ export default function RegisterPage() {
           />
         }
       />
-      <Text
-        style={{
-          color: feedbackColor,
-          height: 20, // 预留空间，确保高度足够显示一行文字
-          alignSelf: "center",
-          marginVertical: 10,
-        }}
-      >
-        {feedbackMessage}
-      </Text>
+      {errorMessage.length > 0 && (
+        <Text style={{ color: "red", alignSelf: "center", marginBottom: 10 }}>
+          {errorMessage}
+        </Text>
+      )}
       <Button
         mode="elevated"
         style={GlobalStyles.button}

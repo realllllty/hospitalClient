@@ -80,7 +80,7 @@ export default function LoginPagePage({ navigation }) {
       </View>
       <Button
         mode="elevated"
-        style={GlobalStyles.button}
+        style={styles.button}
         buttonColor={"#1652ca"}
         textColor="white"
         onPress={handleLogin}
@@ -106,6 +106,11 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     fontWeight: 200,
   },
-
+  button: {
+    borderRadius: 6,
+    width: "40%",
+    alignSelf: "center",
+    marginTop: 100,
+  },
   ButtonFontStyles: {},
 });
