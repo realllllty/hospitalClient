@@ -75,10 +75,6 @@ export default function LoginPagePage({ navigation }) {
         // 登录成功，存储JWT到AsyncStorage
         await AsyncStorage.setItem("userToken", response.data.data);
 
-        Toast.show({
-          type: "success",
-          text1: "登录成功",
-        });
         // 登录成功，跳转到首页
         navigation.navigate("首页");
       } else {

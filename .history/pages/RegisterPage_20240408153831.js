@@ -90,7 +90,7 @@ export default function RegisterPage({ navigation }) {
 
       if (response.data.code === 1) {
         // 注册成功
-        Toast.show({ type: "success", text1: "注册成功" });
+        Toast.show({ type: "success", text1: response.data.msg || "注册成功" });
         navigation.navigate("登录"); // 注册成功后跳转到登录页面
       } else {
         // 注册失败，显示后端返回的错误消息
@@ -106,6 +106,10 @@ export default function RegisterPage({ navigation }) {
         text1: "注册失败，请检查网络连接",
       });
     }
+
+    //     Toast.show({ type: "success", text1: "注册成功" });
+
+    //     navigation.navigate("登录");
   };
 
   useEffect(() => {

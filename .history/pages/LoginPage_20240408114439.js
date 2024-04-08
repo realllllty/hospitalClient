@@ -36,7 +36,10 @@ export default function LoginPagePage({ navigation }) {
     return pwd.length >= 6 && pwd.length <= 16 && /^[A-Za-z0-9]+$/.test(pwd);
   };
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
+    const validPhoneNumber = "12345678901";
+    const validPassword = "Password123";
+
     if (!phoneNumber) {
       Toast.show({ type: "error", text1: "手机号不能为空" });
       return;
@@ -60,42 +63,12 @@ export default function LoginPagePage({ navigation }) {
       return;
     }
 
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        "http://192.168.43.158:8080/member/login",
-        {
-          phone: phoneNumber,
-          password: password,
-        }
-      );
-
-      // 使用code字段判断登录是否成功
-      if (response.data.code === 1) {
-        // 登录成功，存储JWT到AsyncStorage
-        await AsyncStorage.setItem("userToken", response.data.data);
-
-        Toast.show({
-          type: "success",
-          text1: "登录成功",
-        });
-        // 登录成功，跳转到首页
-        navigation.navigate("首页");
-      } else {
-        // 登录失败，显示后端返回的错误消息
-        Toast.show({
-          type: "error",
-          text1: response.data.msg || "登录失败，请稍后再试",
-        });
-      }
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      // 显示更具体的错误信息
-      Toast.show({
-        type: "error",
-        text1: error.response?.data?.msg || "登录失败，请检查网络连接",
-      });
+    if (phoneNumber === validPhoneNumber && password === validPassword) {
+      // 登录成功，跳转到首页
+      navigation.navigate("首页");
+    } else {
+      // 登录失败，显示错误消息
+      Toast.show({ type: "error", text1: "手机号或密码错误" });
     }
   };
 

@@ -3,14 +3,14 @@ import React from "react";
 import { Card, Text, View, Colors } from "react-native-ui-lib";
 import GlobalStyles from "../GlobalStyles";
 
-export default function HomePage() {
+export default function homePage() {
   return (
     <View style={GlobalStyles.container}>
-      <Text>HomePage</Text>
+      <Text>homePage</Text>
 
       <Card row height={160} onPress={() => {}}>
         <Card.Image
-          width={115}
+          width={10}
           style={{ borderRadius: 57.5 }}
           source={require("../assets/favicon.png")}
         />

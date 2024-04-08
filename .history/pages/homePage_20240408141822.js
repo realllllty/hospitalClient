@@ -6,7 +6,7 @@ import GlobalStyles from "../GlobalStyles";
 export default function HomePage() {
   return (
     <View style={GlobalStyles.container}>
-      <Text>HomePage</Text>
+      <Text>homePage</Text>
 
       <Card row height={160} onPress={() => {}}>
         <Card.Image
