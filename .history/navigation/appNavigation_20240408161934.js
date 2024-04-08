@@ -39,7 +39,7 @@ export default function AppNavigation() {
           options={{ headerTitleAlign: "center" }}
         />
         <Stack.Screen
-          name="个人中心"
+          name="忘记密码"
           component={PersonalPage}
           options={{ headerTitleAlign: "center" }}
         />

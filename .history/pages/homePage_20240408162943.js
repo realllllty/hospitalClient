@@ -10,18 +10,12 @@ export default function HomePage({ navigation }) {
       <Text>HomePage</Text>
       <Button
         onPress={() => {
-          navigation.navigate("个人中心");
+          navigation.navigate("登录");
         }}
       >
         跳转到个人中心
       </Button>
-      <Button
-        onPress={() => {
-          navigation.navigate("意见反馈");
-        }}
-      >
-        跳转到意见反馈
-      </Button>
+      <Button>跳转到意见反馈</Button>
     </View>
   );
 }

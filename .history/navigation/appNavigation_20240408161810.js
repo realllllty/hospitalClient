@@ -35,12 +35,12 @@ export default function AppNavigation() {
         />
         <Stack.Screen
           name="意见反馈"
-          component={FeedbackPage}
+          component={ForgetPassport}
           options={{ headerTitleAlign: "center" }}
         />
         <Stack.Screen
-          name="个人中心"
-          component={PersonalPage}
+          name="忘记密码"
+          component={ForgetPassport}
           options={{ headerTitleAlign: "center" }}
         />
       </Stack.Navigator>
