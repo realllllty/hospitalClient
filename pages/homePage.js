@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, ScrollView, ImageBackground } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import HealthCard from "../components/homePage-Card";
 import ProfileCard from "../components/homePage-Profile";
 import AlertCard from "../components/homePage-Alert";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import globalStyles from "../GlobalStyles";
+import request from "../utils/request";
 
 const Homepage = () => {
-    const healthData = [
+    const [healthData, setHealthData] = useState([
         {
             title: "心率",
             value: "72 bpm",
@@ -28,22 +29,49 @@ const Homepage = () => {
             value: "6,542",
             image: require("../assets/homepage/steps.png"),
         },
-    ];
+    ]);
     const buttonData = [
         { image: require("../assets/homepage/setting.png"), indexText: "设置" },
     ];
-    const fakeData = {
+    const [personData, setPersonData] = useState({
         name: "张伟",
         age: "25",
         guardian: "本人",
-    };
-    const alertData = [
+    });
+    const [alertData, setAlertData] = useState([
         { id: 1, time: '2023-04-09 10:30:00', info: '设备A温度过高,当前温度80℃', type: 'current', number: '12345678901'},
         { id: 2, time: '2023-04-09 09:45:00', info: '设备B压力异常,当前压力1.2MPa', type: 'history', number: '12345678901' },
         { id: 3, time: '2023-04-08 15:20:00', info: '设备C故障,需要维修', type: 'history', number: '12345678901' },
         { id: 4, time: '2023-04-08 11:10:00', info: '设备D缺料,请及时补充', type: 'history', number: '12345678901' },
         { id: 5, time: '2023-04-07 16:55:00', info: '设备E效率低,当前效率75%', type: 'history', number: '12345678901' },
-    ];
+    ]);
+
+    // const getData = () => {
+    //     setInterval(async () => {
+    //         healthData = await request('/resident/info/status/2', {auth: false})
+    //     }, 1000 * 60 * 5)
+    // }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            // 在这里发送请求获取最新的数据
+            const newHealthData = await request.get("/api/health-data");
+            const newPersonData = await request.get("/api/person-data");
+            const newAlertData = await request.get("/api/alert-data");
+
+            // 更新状态
+            setHealthData(newHealthData);
+            setPersonData(newPersonData);
+            setAlertData(newAlertData);
+        };
+
+        fetchData();
+        const interval = setInterval(fetchData, 1000 * 60 * 5); // 每5分钟获取一次数据
+
+        return () => {
+            clearInterval(interval); // 在组件卸载时清除定时器
+        };
+    }, []);
 
     const UserStatusScreen = () => (
         <View style={ styles.tabContainer }>
