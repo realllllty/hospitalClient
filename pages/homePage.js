@@ -1,8 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, ScrollView, ImageBackground } from "react-native";
 import React from "react";
 import HealthCard from "../components/homePage-Card";
 import ProfileCard from "../components/homePage-Profile";
+import AlertCard from "../components/homePage-Alert";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import globalStyles from "../GlobalStyles";
 
 const Homepage = () => {
     const healthData = [
@@ -35,23 +37,41 @@ const Homepage = () => {
         age: "25",
         guardian: "本人",
     };
+    const alertData = [
+        { id: 1, time: '2023-04-09 10:30:00', info: '设备A温度过高,当前温度80℃', type: 'current', number: '12345678901'},
+        { id: 2, time: '2023-04-09 09:45:00', info: '设备B压力异常,当前压力1.2MPa', type: 'history', number: '12345678901' },
+        { id: 3, time: '2023-04-08 15:20:00', info: '设备C故障,需要维修', type: 'history', number: '12345678901' },
+        { id: 4, time: '2023-04-08 11:10:00', info: '设备D缺料,请及时补充', type: 'history', number: '12345678901' },
+        { id: 5, time: '2023-04-07 16:55:00', info: '设备E效率低,当前效率75%', type: 'history', number: '12345678901' },
+    ];
 
     const UserStatusScreen = () => (
-        <View style={styles.tabContainer}>
-            {healthData.map((item, index) => (
-                <HealthCard
-                    key={index}
-                    title={item.title}
-                    value={item.value}
-                    image={item.image}
-                />
-            ))}
+        <View style={ styles.tabContainer }>
+            <ScrollView style={ styles.scroll }>
+                {healthData.map((item, index) => (
+                    <HealthCard
+                        key={index}
+                        title={item.title}
+                        value={item.value}
+                        image={item.image}
+                    />
+                ))}
+            </ScrollView>
         </View>
     );
 
     const AlertInfoScreen = () => (
         <View style={styles.tabContainer}>
-            {/* 这里可以添加报警信息的内容 */}
+            {
+                alertData.map((item, index) => (
+                    <AlertCard
+                        key={index}
+                        time={item.time}
+                        info={item.info}
+                        type={item.type}
+                    />
+                ))
+            }
         </View>
     );
 
@@ -69,39 +89,38 @@ const Homepage = () => {
     ]);
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <View style={styles.buttonGroup}>
-                    {buttonData.map((button, index) => (
-                        <TouchableOpacity key={index} style={styles.button}>
-                            <Image source={button.image} style={styles.buttonImage} />
-                            <Text> {button.indexText} </Text>
-                        </TouchableOpacity>
-                    ))}
-                </View>
-            </View>
-            <ProfileCard info={fakeData} />
-            <TabView
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                onIndexChange={setIndex}
-                initialLayout={initialLayout}
-                renderTabBar={props => (
-                    <TabBar
-                        {...props}
-                        style={{ backgroundColor: 'white' }}
-                        indicatorStyle={{ backgroundColor: 'blue', height: 2 }}
-                        activeColor="blue"
-                        inactiveColor="black"
-                        labelStyle={{ fontSize: 16 }}
-                    />
-                )}
-            />
+        <View style={ globalStyles.container }>
+                <ProfileCard info={fakeData} />
+                <TabView
+                    navigationState={{ index, routes }}
+                    renderScene={renderScene}
+                    onIndexChange={setIndex}
+                    initialLayout={initialLayout}
+                    renderTabBar={props => (
+                        <TabBar
+                            {...props}
+                            style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: 10, }}
+                            indicatorStyle={{ backgroundColor: 'rgba(255, 255, 255, 0)', height: 2  }}
+                            activeColor="blue"
+                            inactiveColor="black"
+                            labelStyle={{ fontSize: 16 }}
+                        />
+                    )}
+                />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    image: {
+        height: "100%",
+        width: "100%",
+        resizeMode: 'cover',
+        justifyContent: 'center',
+    },
+    scroll: {
+        height: "100%",
+    },
     header: {
         flexDirection: "row",
         justifyContent: "flex-start",
@@ -134,7 +153,7 @@ const styles = StyleSheet.create({
     },
     tabContainer: {
         flex: 1,
-        padding: 20,
+        paddingVertical: 20
     },
 });
 
