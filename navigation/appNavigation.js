@@ -8,6 +8,7 @@ import RegisterPage from "../pages/RegisterPage";
 import ForgetPassport from "../pages/ForgetPassport";
 import FeedbackPage from "../pages/FeedbackPage";
 import PersonalPage from "../pages/PersonalPage";
+import TabNavigator from "./tabNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +23,11 @@ export default function AppNavigation() {
             headerShown: false,
           }}
         />
-        <Stack.Screen name="首页" component={HomePage} />
+        <Stack.Screen
+            name="首页"
+            component={TabNavigator}
+            options={{
+            headerShown: false,}}/>
         <Stack.Screen
           name="注册"
           component={RegisterPage}
