@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomePage from "../pages/homePage";
+import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import ForgetPassport from "../pages/ForgetPassport";
@@ -35,12 +35,12 @@ export default function AppNavigation() {
         />
         <Stack.Screen
           name="意见反馈"
-          component={FeedbackPage}
+          component={ForgetPassport}
           options={{ headerTitleAlign: "center" }}
         />
         <Stack.Screen
-          name="个人中心"
-          component={PersonalPage}
+          name="忘记密码"
+          component={ForgetPassport}
           options={{ headerTitleAlign: "center" }}
         />
       </Stack.Navigator>

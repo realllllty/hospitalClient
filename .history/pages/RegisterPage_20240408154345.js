@@ -106,6 +106,10 @@ export default function RegisterPage({ navigation }) {
         text1: "注册失败，请检查网络连接",
       });
     }
+
+    //     Toast.show({ type: "success", text1: "注册成功" });
+
+    //     navigation.navigate("登录");
   };
 
   useEffect(() => {

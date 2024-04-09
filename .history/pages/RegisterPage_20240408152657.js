@@ -24,7 +24,7 @@ export default function RegisterPage({ navigation }) {
     setIsButtonDisabled(true);
   };
 
-  const handleRegister = async () => {
+  const handleRegister = () => {
     // 用户名验证：3-8位字符
     if (!userName || userName.length < 3 || userName.length > 8) {
       Toast.show({
@@ -76,36 +76,9 @@ export default function RegisterPage({ navigation }) {
       return;
     }
 
-    // 注册请求发送到后端
-    try {
-      const response = await axios.post(
-        "http://192.168.43.158:8080/member/register",
-        {
-          username: userName,
-          password: password,
-          residentId: elderID,
-          phone: phoneNumber,
-        }
-      );
+    Toast.show({ type: "success", text1: "注册成功" });
 
-      if (response.data.code === 1) {
-        // 注册成功
-        Toast.show({ type: "success", text1: "注册成功" });
-        navigation.navigate("登录"); // 注册成功后跳转到登录页面
-      } else {
-        // 注册失败，显示后端返回的错误消息
-        Toast.show({
-          type: "error",
-          text1: response.data.msg || "注册失败，请稍后再试",
-        });
-      }
-    } catch (error) {
-      // 网络请求失败或其他错误
-      Toast.show({
-        type: "error",
-        text1: "注册失败，请检查网络连接",
-      });
-    }
+    navigation.navigate("登录");
   };
 
   useEffect(() => {

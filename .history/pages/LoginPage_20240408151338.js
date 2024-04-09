@@ -70,22 +70,19 @@ export default function LoginPagePage({ navigation }) {
         }
       );
 
-      // 使用code字段判断登录是否成功
-      if (response.data.code === 1) {
+      // 检查登录是否成功
+      // 这里假设后端返回的响应体中包含一个字段表示成功与否
+      if (response.data.success) {
         // 登录成功，存储JWT到AsyncStorage
         await AsyncStorage.setItem("userToken", response.data.data);
 
-        Toast.show({
-          type: "success",
-          text1: "登录成功",
-        });
         // 登录成功，跳转到首页
         navigation.navigate("首页");
       } else {
-        // 登录失败，显示后端返回的错误消息
+        // 登录失败，显示后端返回的错误信息
         Toast.show({
           type: "error",
-          text1: response.data.msg || "登录失败，请稍后再试",
+          text1: response.data.message || "登录失败，请稍后再试",
         });
       }
       setLoading(false);
@@ -94,7 +91,7 @@ export default function LoginPagePage({ navigation }) {
       // 显示更具体的错误信息
       Toast.show({
         type: "error",
-        text1: error.response?.data?.msg || "登录失败，请检查网络连接",
+        text1: error.response?.data?.message || "登录失败，请检查网络连接",
       });
     }
   };
