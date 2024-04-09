@@ -4,7 +4,6 @@ import GlobalStyles from "../GlobalStyles";
 import { Button, Avatar } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import Toast from "react-native-toast-message";
 import { API_BASE_URL } from "../config";
 
 export default function PersonalPage({ navigation }) {

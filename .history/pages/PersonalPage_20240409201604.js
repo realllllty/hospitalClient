@@ -4,7 +4,6 @@ import GlobalStyles from "../GlobalStyles";
 import { Button, Avatar } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import Toast from "react-native-toast-message";
 import { API_BASE_URL } from "../config";
 
 export default function PersonalPage({ navigation }) {
@@ -39,10 +38,6 @@ export default function PersonalPage({ navigation }) {
 
   const logout = async () => {
     await AsyncStorage.removeItem("userToken"); // 清除JWT令牌
-    Toast.show({
-      type: "success",
-      text1: "成功退出",
-    });
     navigation.navigate("登录"); // 导航到登录页面
   };
 
@@ -143,7 +138,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     backgroundColor: "white",
     padding: 20,
-    borderRadius: 5,
+    borderRadius: 3,
     alignItems: "center",
   },
   button: {

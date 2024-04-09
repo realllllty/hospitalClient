@@ -4,7 +4,6 @@ import GlobalStyles from "../GlobalStyles";
 import { Button, Avatar } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import Toast from "react-native-toast-message";
 import { API_BASE_URL } from "../config";
 
 export default function PersonalPage({ navigation }) {
@@ -39,10 +38,6 @@ export default function PersonalPage({ navigation }) {
 
   const logout = async () => {
     await AsyncStorage.removeItem("userToken"); // 清除JWT令牌
-    Toast.show({
-      type: "success",
-      text1: "成功退出",
-    });
     navigation.navigate("登录"); // 导航到登录页面
   };
 
@@ -51,27 +46,11 @@ export default function PersonalPage({ navigation }) {
       <View style={styles.flexRow}>
         <Avatar.Image size={90} source={require("../assets/oldman.jpg")} />
 
-        <View
-          style={{
-            gap: 20,
-            alignItems: "center",
-            backgroundColor: "#f2f2f2",
-            padding: 17,
-            borderRadius: 5,
-          }}
-        >
+        <View style={{ gap: 20 }}>
           <Text style={{ fontSize: 17 }}>
-            <Text style={{ fontWeight: "bold" }}>老人：</Text>
-            {userData.firstName} {userData.lastName}
+            老人 {userData.firstName} {userData.lastName} 年龄 {userData.age}{" "}
           </Text>
-          <Text style={{ fontSize: 17 }}>
-            <Text style={{ fontWeight: "bold" }}>年龄：</Text>
-            {userData.age} 岁
-          </Text>
-          <Text style={{ fontSize: 17 }}>
-            <Text style={{ fontWeight: "bold" }}>本人：</Text>
-            {userData.username}
-          </Text>
+          <Text style={{ fontSize: 17 }}>本人 {userData.username} </Text>
         </View>
       </View>
 
@@ -143,8 +122,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     backgroundColor: "white",
     padding: 20,
-    borderRadius: 5,
-    alignItems: "center",
+    borderRadius: 3,
   },
   button: {
     borderRadius: 5,
