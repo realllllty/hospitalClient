@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../pages/homePage';
-import ChatScreen from '../pages/Chat';
+import ChatPage from "../pages/ChatPage";
 import Setting from '../pages/Setting';
 
 const Tab = createBottomTabNavigator();
@@ -16,7 +16,7 @@ function TabNavigator() {
             }}/>
             <Tab.Screen
                 name="Chat"
-                component={ChatScreen}
+                component={ChatPage}
                 options={{
                     headerShown: false,
                 }}/>
