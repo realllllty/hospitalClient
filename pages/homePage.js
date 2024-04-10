@@ -5,68 +5,79 @@ import ProfileCard from "../components/homePage-Profile";
 import AlertCard from "../components/homePage-Alert";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import globalStyles from "../GlobalStyles";
-import request from "../utils/request";
+import request from "../util/request";
+
+const stateMap = [
+    { key: 'heartRate', title: '心率', image: require("../assets/homepage/heart.png") },
+    { key: 'bodyTemperature', title: '体温', image: require("../assets/homepage/blood-pressure.png") },
+    { key: 'oxygenLevel', title: '血氧', image: require("../assets/homepage/blood-glucose.png")},
+]
 
 const Homepage = () => {
     const [healthData, setHealthData] = useState([
-        {
-            title: "心率",
-            value: "72 bpm",
-            image: require("../assets/homepage/heart.png"),
-        },
-        {
-            title: "血压",
-            value: "120/80 mmHg",
-            image: require("../assets/homepage/blood-pressure.png"),
-        },
-        {
-            title: "血糖",
-            value: "5.2 mmol/L",
-            image: require("../assets/homepage/blood-glucose.png"),
-        },
-        {
-            title: "步数",
-            value: "6,542",
-            image: require("../assets/homepage/steps.png"),
-        },
     ]);
     const buttonData = [
         { image: require("../assets/homepage/setting.png"), indexText: "设置" },
     ];
-    const [personData, setPersonData] = useState({
-        name: "张伟",
-        age: "25",
-        guardian: "本人",
-    });
+    const [personData, setPersonData] = useState({});
     const [alertData, setAlertData] = useState([
-        { id: 1, time: '2023-04-09 10:30:00', info: '设备A温度过高,当前温度80℃', type: 'current', number: '12345678901'},
-        { id: 2, time: '2023-04-09 09:45:00', info: '设备B压力异常,当前压力1.2MPa', type: 'history', number: '12345678901' },
-        { id: 3, time: '2023-04-08 15:20:00', info: '设备C故障,需要维修', type: 'history', number: '12345678901' },
-        { id: 4, time: '2023-04-08 11:10:00', info: '设备D缺料,请及时补充', type: 'history', number: '12345678901' },
-        { id: 5, time: '2023-04-07 16:55:00', info: '设备E效率低,当前效率75%', type: 'history', number: '12345678901' },
     ]);
-
-    // const getData = () => {
-    //     setInterval(async () => {
-    //         healthData = await request('/resident/info/status/2', {auth: false})
-    //     }, 1000 * 60 * 5)
-    // }
 
     useEffect(() => {
         const fetchData = async () => {
             // 在这里发送请求获取最新的数据
-            const newHealthData = await request.get("/api/health-data");
-            const newPersonData = await request.get("/api/person-data");
-            const newAlertData = await request.get("/api/alert-data");
+            let newHealthData = await request("/resident/nowinfo/2", { auth: false });
+            let newPersonData = await request("/resident/info/2", { auth: false });
+            let newAlertData = await request("/resident/exception/2", { auth: false });
+
+            // TODO: 测试专用
+            // console.log(newHealthData, newPersonData, newAlertData);
+
+            // 数据处理
+            newPersonData = {
+                age: newPersonData.age,
+                name: newPersonData.firstName ? newPersonData.firstName : '' + newPersonData.lastName ? newPersonData.lastName : '',
+                guardian: newPersonData.guardian ? newPersonData.guardian : '',
+            }
+
+            let stateArray = [];
+
+            for (let key in newHealthData) {
+                stateMap.forEach(item => {
+                    if (key === item.key) {
+                        let obj = {
+                            title: item.title,
+                            value: newHealthData[key],
+                            image: item.image,
+                        }
+                        stateArray.push(obj);
+                    }
+                })
+            }
+
+            let alertDataArr = [];
+
+            for (let key in newAlertData) {
+                let obj = {
+                    id: key,
+                    time: newAlertData[key].exceptionStartTime + newAlertData[key].exceptionEndTime,
+                    info: newAlertData[key].exceptionInfo,
+                    type: newAlertData[key].isCurrent ? 'current' : 'history',
+                    number: newAlertData[key].phone ? newAlertData[key].phone : '',
+                }
+                alertDataArr.push(obj);
+            }
 
             // 更新状态
-            setHealthData(newHealthData);
+            setHealthData(stateArray);
             setPersonData(newPersonData);
-            setAlertData(newAlertData);
+            setAlertData(alertDataArr);
         };
 
         fetchData();
-        const interval = setInterval(fetchData, 1000 * 60 * 5); // 每5分钟获取一次数据
+
+        // TODO: 更改时间间隔
+        const interval = setInterval(fetchData, 1000 * 2 * 60); // 每5分钟获取一次数据
 
         return () => {
             clearInterval(interval); // 在组件卸载时清除定时器
@@ -105,10 +116,19 @@ const Homepage = () => {
 
     const initialLayout = { width: Dimensions.get('window').width };
 
-    const renderScene = SceneMap({
-        userStatus: UserStatusScreen,
-        alertInfo: AlertInfoScreen,
-    });
+    // const renderScene = SceneMap({
+    //     userStatus: UserStatusScreen,
+    //     alertInfo: AlertInfoScreen,
+    // });
+
+    const renderScene = ({ route }) => {
+        switch (route.key) {
+            case 'userStatus':
+                return <UserStatusScreen style={{ height: 6000, overflow: 'scroll' }} />;
+            case 'alertInfo':
+                return <AlertInfoScreen style={{ height: 6000, overflow: 'scroll' }} />;
+        }
+    };
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
@@ -118,7 +138,7 @@ const Homepage = () => {
 
     return (
         <View style={ globalStyles.container }>
-                <ProfileCard info={fakeData} />
+                <ProfileCard info={personData} />
                 <TabView
                     navigationState={{ index, routes }}
                     renderScene={renderScene}
@@ -180,8 +200,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#f0f0f0",
     },
     tabContainer: {
-        flex: 1,
-        paddingVertical: 20
+        paddingVertical: 20,
+        height: 600,
+        overflow: 'scroll',
     },
 });
 
