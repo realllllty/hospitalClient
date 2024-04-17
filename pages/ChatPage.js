@@ -5,7 +5,6 @@ import {
   Send,
   InputToolbar,
 } from "react-native-gifted-chat";
-// 引入中文语言包
 import "dayjs/locale/zh-cn";
 import dayjs from "dayjs";
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
@@ -17,7 +16,7 @@ export default function ChatPage() {
     setMessages([
       {
         _id: 1,
-        text: "你好老人家属！",
+        text: "你好老人家属(自动问候)",
         createdAt: new Date(),
         user: {
           _id: 2,
@@ -27,8 +26,22 @@ export default function ChatPage() {
       },
     ]);
   }, []);
-  const onSend = useCallback((msg = []) => {
-    setMessages((previousMessages) => GiftedChat.append(previousMessages, msg));
+
+  const onSend = useCallback((newMessages = []) => {
+    setMessages((previousMessages) => GiftedChat.append(previousMessages, newMessages));
+    const replies = {
+      _id: Math.round(Math.random() * 1000000),
+      text: '具体是什么问题',
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: "Assistant",
+        avatar: "../assets/nurse.jpg",
+      },
+    };
+    setTimeout(() => {
+      setMessages((previousMessages) => GiftedChat.append(previousMessages, [replies]));
+    }, 10000); // Reply after 1 second
   }, []);
 
   const renderBubble = (props) => {
@@ -72,9 +85,7 @@ export default function ChatPage() {
     );
   };
 
-  // 为了自定义输入栏的高度，您可以创建一个 renderInputToolbar 函数
   const renderInputToolbar = (props) => {
-    // 这里自定义输入栏的样式
     return <InputToolbar {...props} containerStyle={styles.inputToolbar} />;
   };
 
@@ -82,7 +93,7 @@ export default function ChatPage() {
     <SafeAreaView style={styles.mainContent}>
       <GiftedChat
         messages={messages}
-        onSend={(messages) => onSend(messages)}
+        onSend={onSend}
         showUserAvatar={true}
         locale={"zh-cn"}
         showAvatarForEveryMessage={true}
@@ -90,7 +101,7 @@ export default function ChatPage() {
         placeholder={"开始聊天吧"}
         renderSend={renderSend}
         textInputStyle={{ fontSize: 20, lineHeight: 18 }}
-        renderInputToolbar={renderInputToolbar} // 添加这行来自定义输入栏
+        renderInputToolbar={renderInputToolbar}
         inverted={true}
         renderUsernameOnMessage={true}
         user={{
@@ -104,24 +115,22 @@ export default function ChatPage() {
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   inputToolbar: {
-    // 添加自定义输入栏的样式
     backgroundColor: "white",
     padding: 6,
   },
   sendContainer: {
-    // 添加自定义发送按钮容器的样式
     justifyContent: "center",
     alignItems: "center",
-    height: 44, // 设置按钮的高度
+    height: 44,
     paddingRight: 10,
   },
   mainContent: {
     flex: 1,
     backgroundColor: "#ededed",
   },
-
   sendBtn: {
     width: 63,
     height: 32,
